@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('legislators', function (Blueprint $table) {
             $table->id();
-            $table->unique(['external_id', 'chamber']);
+            $table->unsignedBigInteger('external_id');
+            $table->string('chamber');
             $table->string('civil_name')->nullable();
             $table->string('parliamentary_name');
             $table->string('photo_url')->nullable();
@@ -28,6 +29,8 @@ return new class extends Migration
             $table->json('social_media')->nullable();
             $table->json('raw_data')->nullable();
             $table->timestamps();
+
+            $table->unique(['external_id', 'chamber']);
         });
     }
 
