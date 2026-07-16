@@ -9,26 +9,26 @@ class LowerHouseApiService
     protected string $baseUrl = 'https://dadosabertos.camara.leg.br/api/v2';
 
     public function listIds(): array
-    {
-        $response = Http::get("{$this->baseUrl}/deputados", [
-            'itens' => 100,
-        ]);
+{
+    $response = Http::withOptions(['verify' => false])->get("{$this->baseUrl}/deputados?siglaUf=CE", [
+        'itens' => 100,
+    ]);
 
-        if ($response->failed()) {
-            throw new \RuntimeException('Failed to fetch legislators list: ' . $response->status());
-        }
-
-        return collect($response->json('dados'))->pluck('id')->all();
+    if ($response->failed()) {
+        throw new \RuntimeException('Failed to fetch legislators list: ' . $response->status());
     }
 
-    public function getDetails(string $id): array
-    {
-        $response = Http::get("{$this->baseUrl}/deputados/{$id}");
+    return collect($response->json('dados'))->pluck('id')->all();
+}
 
-        if ($response->failed()) {
-            throw new \RuntimeException("Failed to fetch details for legislator {$id}: " . $response->status());
-        }
+public function getDetails(string $id): array
+{
+    $response = Http::withOptions(['verify' => false])->get("{$this->baseUrl}/deputados/{$id}");
 
-        return $response->json('dados');
+    if ($response->failed()) {
+        throw new \RuntimeException("Failed to fetch details for legislator {$id}: " . $response->status());
     }
+
+    return $response->json('dados');
+}
 }
