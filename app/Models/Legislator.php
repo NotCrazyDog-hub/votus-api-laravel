@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\LegislatorStatus;
+use App\Enums\ElectoralStatus;
 
 class Legislator extends Model
 {
@@ -27,7 +29,7 @@ class Legislator extends Model
     protected $casts = [
         'social_media' => 'array',
         'raw_data' => 'array',
-        'status' => \App\Enums\LegislatorStatus::class,
-        'electoral_status' => \App\Enums\ElectoralStatus::class,
+        'status' => LegislatorStatus::class,
+        'electoral_status' => ElectoralStatus::class,
     ];
 }
