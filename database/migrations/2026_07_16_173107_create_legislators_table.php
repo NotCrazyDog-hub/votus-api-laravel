@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('legislators', function (Blueprint $table) {
+            $table->id();
+            $table->string('external_id')->unique();
+            $table->enum('chamber', ['lower_house', 'senate']); // camara, senado
+            $table->string('civil_name')->nullable();
+            $table->string('parliamentary_name');
+            $table->string('photo_url')->nullable();
+            $table->string('party')->nullable();
+            $table->string('state', 2)->nullable(); // UF
+            $table->integer('legislature')->nullable(); // 57
+            $table->enum('electoral_status', ['sitting', 'alternate'])->nullable(); // titular, suplente
+            $table->enum('status', ['active', 'on_leave'])->nullable(); // exercicio, afastado
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('official_website')->nullable();
+            $table->json('social_media')->nullable(); // array of URLs
+            $table->json('raw_data')->nullable(); // original API payload
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('legislators');
+    }
+};
