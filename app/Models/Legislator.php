@@ -27,5 +27,7 @@ class Legislator extends Model
     protected $casts = [
         'social_media' => 'array',
         'raw_data' => 'array',
+        'status' => \App\Enums\LegislatorStatus::class,
+        'electoral_status' => \App\Enums\ElectoralStatus::class,
     ];
 }

@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('legislators', function (Blueprint $table) {
             $table->id();
-            $table->string('external_id')->unique();
-            $table->enum('chamber', ['lower_house', 'senate']); // camara, senado
+            $table->unique(['external_id', 'chamber']);
             $table->string('civil_name')->nullable();
             $table->string('parliamentary_name');
             $table->string('photo_url')->nullable();
             $table->string('party')->nullable();
             $table->string('state', 2)->nullable(); // UF
             $table->integer('legislature')->nullable(); // 57
-            $table->enum('electoral_status', ['sitting', 'alternate'])->nullable(); // titular, suplente
-            $table->enum('status', ['active', 'on_leave'])->nullable(); // exercicio, afastado
+            $table->string('status')->nullable();
+            $table->string('electoral_status')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('official_website')->nullable();
