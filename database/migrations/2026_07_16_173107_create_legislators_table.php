@@ -18,15 +18,15 @@ return new class extends Migration
             $table->string('parliamentary_name');
             $table->string('photo_url')->nullable();
             $table->string('party')->nullable();
-            $table->string('state', 2)->nullable(); // UF
-            $table->integer('legislature')->nullable(); // 57
+            $table->string('state', 2)->nullable();
+            $table->integer('legislature')->nullable();
             $table->string('status')->nullable();
             $table->string('electoral_status')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('official_website')->nullable();
-            $table->json('social_media')->nullable(); // array of URLs
-            $table->json('raw_data')->nullable(); // original API payload
+            $table->json('social_media')->nullable();
+            $table->json('raw_data')->nullable();
             $table->timestamps();
         });
     }
