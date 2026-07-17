@@ -2,31 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Legislator;
 use Illuminate\Http\Request;
+use App\Services\LegislatorService;
 
 class LegislatorController extends Controller
 {
+    public function __construct(protected LegislatorService $service) {}
+    
     public function indexForDeputies(Request $request)
     {
         return response()->json(
-            Legislator::where('chamber', 'lower_house')
-                ->when($request->state, fn ($q, $uf) => $q->where('state', $uf))
-                ->paginate(50)
+            $this->service->listByChamber('lower_house', $request->state)
         );
     }
 
     public function indexForSenators(Request $request)
     {
         return response()->json(
-            Legislator::where('chamber', 'senate')
-                ->when($request->state, fn ($q, $uf) => $q->where('state', $uf))
-                ->paginate(50)
+            $this->service->listByChamber('senate', $request->state)
         );
     }
 
-    public function show(Legislator $legislator)
+    public function showDeputy(int $external_id)
     {
-        return response()->json($legislator);
+        return response()->json($this->service->findByChamber($external_id, 'lower_house'));
+    }
+
+    public function showSenator(int $external_id)
+    {
+        return response()->json($this->service->findByChamber($external_id, 'senate'));
     }
 }
