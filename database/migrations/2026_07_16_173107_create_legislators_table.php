@@ -31,6 +31,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['external_id', 'chamber']);
+            $table->index(['chamber', 'state']);
         });
     }
 
