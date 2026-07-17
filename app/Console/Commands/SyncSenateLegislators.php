@@ -33,9 +33,10 @@ class SyncSenateLegislators extends Command
                         'party' => $identification['SiglaPartidoParlamentar'] ?? null,
                         'state' => $identification['UfParlamentar'] ?? null,
                         'legislature' => $api->currentLegislatureNumber($mandate),
-                        'electoral_status' => isset($mandate['DescricaoParticipacao']) && str_contains(strtolower($mandate['DescricaoParticipacao']), 'suplente')
-                            ? 'alternate'
-                            : 'sitting',
+                        'electoral_status' => match(true) {
+                            str_contains(strtolower($mandate['DescricaoParticipacao'] ?? ''), 'suplente') => 'alternate',
+                            default => 'sitting',
+                        },
                         'status' => 'active',
                         'phone' => null,
                         'email' => $identification['EmailParlamentar'] ?? null,

@@ -30,8 +30,15 @@ class SyncLowerHouseLegislators extends Command
                     'party' => $status['siglaPartido'],
                     'state' => $status['siglaUf'],
                     'legislature' => $status['idLegislatura'] ?? null,
-                    'electoral_status' => str_contains(strtolower($status['condicaoEleitoral']), 'suplente') ? 'alternate' : 'sitting',
-                    'status' => str_contains(strtolower($status['situacao']), 'exercício') ? 'active' : 'on_leave',
+                    'electoral_status' => match(true) {
+                        str_contains(strtolower($mandate['DescricaoParticipacao'] ?? ''), 'suplente') => 'alternate',
+                        default => 'sitting',
+                    },
+                    'status' => match(strtolower($status['situacao'] ?? '')) {
+                        'exercício' => 'active',
+                        'afastado' => 'on_leave',
+                        default => 'unknown',
+                    },
                     'phone' => $status['gabinete']['telefone'] ?? null,
                     'email' => $status['gabinete']['email'] ?? null,
                     'social_media' => $data['redeSocial'] ?? [],
