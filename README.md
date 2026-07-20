@@ -100,12 +100,11 @@ php artisan sync:legislators-lower-house
 php artisan sync:legislators-senate
 ```
 
-## 🛠️ Stack do projeto
+## 🛠️ Stack
  
-* [Laravel](https://laravel.com) 
-* [Supabase](https://supabase.com)
-* [Laravel Cloud](https://cloud.laravel.com)
-* [Next.js](https://nextjs.org) — Frontend (repositório separado)
+* [Laravel](https://laravel.com) - API Backend
+* [Supabase](https://supabase.com) - Banco de dados PostgreSQL
+* [Laravel Cloud](https://cloud.laravel.com) - Deploy
 
  ## 📁 Estrutura do projeto
  
