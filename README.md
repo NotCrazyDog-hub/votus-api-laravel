@@ -1,58 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+    <img width="400" alt="Votus Logo" src="https://github.com/user-attachments/assets/391c325b-9cb0-4998-a657-c7f587cbefa9" />
 </p>
 
-## About Laravel
+<p align="center"> 
+    <img loading="lazy" src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/> 
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Sobre o projeto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O **Votus** é um sistema de transparência política desenvolvido para o **Ceará Científico 2026**. Ele monitora deputados e senadores do Ceará, cruzando o discurso público deles com suas ações reais por meio de um **Índice de Confiabilidade** (percentual de coerência legislativa) e uma aba de notícias .
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Este repositório é dedicado especificamente ao **módulo do Perfil Parlamentar**, sendo responsável por integrar e exibir:
+* Histórico político do parlamentar;
+* Segmentos e áreas de atuação declaradas;
+* Dados e trajetórias legislativas.
 
-## Learning Laravel
+## 🚀 Começando
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Essas instruções permitirão que você obtenha uma cópia do projeto em operação na sua máquina local para fins de desenvolvimento e teste.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 📋 Pré-requisitos
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+* PHP 8.2+
+* Composer
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 🔧 Instalação
+ 
+1. Clone o repositório e instale as dependências:
+ 
+```bash
+git clone https://github.com/NotCrazyDog-hub/votus-api-laravel.git
+cd votus-api-laravel
+composer install
+```
+ 
+2. Preencha as credenciais no `.env`:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+copy .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Descomente as linhas de código abaixo e preencha conforme as variáveis com as credenciais do seu ambiente
 
-## Contributing
+```env
+DB_CONNECTION=sqlite
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=laravel
+# DB_USERNAME=root
+# DB_PASSWORD=
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. Rode as migrations e sincronize os dados:
+ 
+```bash
+php artisan migrate
+php artisan sync:legislators-lower-house
+php artisan sync:legislators-senate
+php artisan serve
+```
+ 
+A API estará disponível em `http://localhost:8000/api`.
+ 
+## 📡 Endpoints
+ 
+```
+GET /api/deputies                    Lista deputados federais
+GET /api/deputies/{external_id}      Perfil de um deputado
+GET /api/senators                    Lista senadores
+GET /api/senators/{external_id}      Perfil de um senador
+```
 
-## Code of Conduct
+## 🔄 Sincronização de dados
+ 
+Os dados são sincronizados semanalmente via Laravel Scheduler, a partir das APIs públicas:
+ 
+* **Câmara dos Deputados:** `dadosabertos.camara.leg.br/api/v2`
+* **Senado Federal:** `legis.senado.leg.br/dadosabertos`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Para sincronizar manualmente:
+ 
+```bash
+php artisan sync:legislators-lower-house
+php artisan sync:legislators-senate
+```
 
-## Security Vulnerabilities
+## 🛠️ Stack do projeto
+ 
+* [Laravel](https://laravel.com) 
+* [Supabase](https://supabase.com)
+* [Laravel Cloud](https://cloud.laravel.com)
+* [Next.js](https://nextjs.org) — Frontend (repositório separado)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+ ## 📁 Estrutura do projeto
+ 
+```
+app/
+  Console/Commands/
+    SyncLowerHouseLegislators.php   Sincroniza deputados federais
+    SyncSenateLegislators.php       Sincroniza senadores
+  Http/Controllers/
+    LegislatorController.php        Endpoints da API
+  Models/
+    Legislator.php                  Model da tabela legislators
+  Services/
+    LowerHouseApiService.php        Comunicação com API da Câmara
+    SenateApiService.php            Comunicação com API do Senado
+    LegislatorService.php           Queries no banco de dados
+  Enums/
+    LegislatorStatus.php            active | on_leave | unknown
+    ElectoralStatus.php             sitting | alternate | unknown
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+~ Equipe de desenvolvimento do Votus
