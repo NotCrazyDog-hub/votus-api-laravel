@@ -25,11 +25,15 @@ class LegislatorController extends Controller
 
     public function showDeputy(int $external_id)
     {
-        return response()->json($this->service->findByChamber($external_id, 'lower_house'));
+        return response()->json(
+            $this->service->findByChamber($external_id, 'lower_house')
+        );
     }
 
     public function showSenator(int $external_id)
     {
-        return response()->json($this->service->findByChamber($external_id, 'senate'));
+        return response()->json(
+            $this->service->findByChamber($external_id, 'senate')
+        );
     }
 }
