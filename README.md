@@ -10,7 +10,7 @@
 
 O **Votus** é um sistema de transparência política desenvolvido para o **Ceará Científico 2026**. Ele monitora deputados e senadores do Ceará, cruzando o discurso público deles com suas ações reais por meio de um **Índice de Confiabilidade** (percentual de coerência legislativa) e uma aba de notícias .
 
-Este repositório é dedicado especificamente ao **módulo do Perfil Parlamentar**, sendo responsável por integrar e exibir:
+O projeto será dividido em múltiplos repositórios. Portanto, este repositório é dedicado especificamente ao **módulo do Perfil Parlamentar**, sendo responsável por integrar e exibir:
 * Histórico político do parlamentar;
 * Segmentos e áreas de atuação declaradas;
 * Dados e trajetórias legislativas.
