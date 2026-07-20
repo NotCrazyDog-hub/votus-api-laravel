@@ -41,7 +41,7 @@ composer install
 2. Preencha as credenciais no `.env`:
 
 ```bash
-copy .env.example .env
+cp .env.example .env
 ```
 ```bash
 php artisan key:generate
