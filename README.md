@@ -3,7 +3,7 @@
 </p>
 
 <p align="center"> 
-    <img loading="lazy" src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=FF6600&style=for-the-badge"/> 
+    <img loading="lazy" src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=FFDE21&style=for-the-badge"/> 
 </p>
 
 ## Sobre o projeto
