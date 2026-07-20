@@ -47,7 +47,7 @@ copy .env.example .env
 php artisan key:generate
 ```
 
-Descomente as linhas de código abaixo e preencha conforme as variáveis com as credenciais do seu ambiente
+Descomente as linhas de código abaixo e preencha as variáveis conforme às credenciais do seu ambiente
 
 ```env
 DB_CONNECTION=sqlite
