@@ -30,7 +30,11 @@ Essas instruções permitirão que você obtenha uma cópia do projeto em opera�
  
 ```bash
 git clone https://github.com/NotCrazyDog-hub/votus-api-laravel.git
+```
+```bash
 cd votus-api-laravel
+```
+```bash
 composer install
 ```
  
@@ -38,6 +42,8 @@ composer install
 
 ```bash
 copy .env.example .env
+```
+```bash
 php artisan key:generate
 ```
 
@@ -56,8 +62,14 @@ DB_CONNECTION=sqlite
  
 ```bash
 php artisan migrate
+```
+```bash
 php artisan sync:legislators-lower-house
+```
+```bash
 php artisan sync:legislators-senate
+```
+```bash
 php artisan serve
 ```
  
@@ -83,6 +95,8 @@ Para sincronizar manualmente:
  
 ```bash
 php artisan sync:legislators-lower-house
+```
+```bash
 php artisan sync:legislators-senate
 ```
 
