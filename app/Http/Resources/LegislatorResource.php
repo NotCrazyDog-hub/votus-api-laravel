@@ -14,6 +14,13 @@ class LegislatorResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'external_id' => $this->external_id,
+            'chamber' => $this->chamber,
+            'parliamentary_name' => $this->parliamentary_name,
+            'photo_url' => $this->photo_url,
+            'party' => $this->party,
+            'state' => $this->state,
+        ];
     }
 }
