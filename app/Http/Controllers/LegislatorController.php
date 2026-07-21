@@ -37,15 +37,4 @@ class LegislatorController extends Controller
             $this->service->findByChamber($external_id, 'senate')
         );
     }
-
-    public function index()
-    {
-        return Legislator::where('state', 'CE')
-            ->orderBy('parliamentary_name')
-            ->get();
-    }
-    public function show(Legislator $legislator)
-    {
-        return $legislator->load('committees');
-    }
 }
