@@ -43,4 +43,30 @@ class LowerHouseApiService
 
         return $response->json('dados') ?? [];
     }
+
+    public function getBillsByLegislator(string $id): array
+    {
+        $allBills = [];
+        $page = 1;
+
+        do {
+            $query = http_build_query([
+                'idDeputadoAutor' => $id,
+                'itens' => 100,
+                'pagina' => $page,
+            ]) . '&siglaTipo=PL&siglaTipo=PEC';
+
+            $response = Http::withOptions(['verify' => false])->get("{$this->baseUrl}/proposicoes?{$query}");
+
+            if ($response->failed()) {
+                throw new \RuntimeException("Failed to fetch bills for legislator {$id}: " . $response->status());
+            }
+
+            $data = $response->json('dados');
+            $allBills = array_merge($allBills, $data);
+            $page++;
+        } while (count($data) === 100);
+
+        return $allBills;
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Enums\LegislatorStatus;
 use App\Enums\ElectoralStatus;
 
@@ -38,5 +39,9 @@ class Legislator extends Model
     {
         return $this->belongsToMany(Committee::class, 'committee_legislator')
             ->withPivot(['role', 'start_date', 'end_date']);
+    }
+    public function bills(): BelongsToMany
+    {
+        return $this->belongsToMany(Bill::class, 'bill_legislator');
     }
 }
