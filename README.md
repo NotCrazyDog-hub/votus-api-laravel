@@ -67,7 +67,13 @@ php artisan migrate
 php artisan sync:legislators-lower-house
 ```
 ```bash
+php artisan sync:committees-lower-house
+```
+```bash
 php artisan sync:legislators-senate
+```
+```bash
+php artisan sync:committees-senate
 ```
 ```bash
 php artisan serve
@@ -97,7 +103,13 @@ Para sincronizar manualmente:
 php artisan sync:legislators-lower-house
 ```
 ```bash
+php artisan sync:committees-lower-house
+```
+```bash
 php artisan sync:legislators-senate
+```
+```bash
+php artisan sync:committees-senate
 ```
 
 ## 🛠️ Stack
@@ -111,12 +123,15 @@ php artisan sync:legislators-senate
 ```
 app/
   Console/Commands/
+    SyncLowerHouseCommittees.php    Sincroniza comissões de deputados
     SyncLowerHouseLegislators.php   Sincroniza deputados federais
+    SyncSenateCommittees.php        Sincroniza comissões de senadores
     SyncSenateLegislators.php       Sincroniza senadores
   Http/Controllers/
     LegislatorController.php        Endpoints da API
   Models/
     Legislator.php                  Model da tabela legislators
+    Committee.php                   Model de comissões parlamentares
   Services/
     LowerHouseApiService.php        Comunicação com API da Câmara
     SenateApiService.php            Comunicação com API do Senado
