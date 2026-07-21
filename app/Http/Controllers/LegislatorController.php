@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\LegislatorService;
 use App\Models\Legislator;
-use App\Http\Resources\LegislatorResource;
+use App\Http\Resources\LegislatorsResource;
 use App\Http\Resources\LegislatorProfileResource;
 
 class LegislatorController extends Controller
@@ -14,16 +14,14 @@ class LegislatorController extends Controller
     
     public function indexForDeputies(Request $request)
     {
-        return response()->json(
-            $this->service->listByChamber('lower_house', $request->state)
-        );
+        $deputies = $this->service->listByChamber('lower_house', $request->state);
+        return LegislatorsResource::collection($deputies);
     }
 
     public function indexForSenators(Request $request)
     {
-        return response()->json(
-            $this->service->listByChamber('senate', $request->state)
-        );
+        $senators = $this->service->listByChamber('senate', $request->state);
+        return LegislatorsResource::collection($senators);
     }
 
     public function showDeputy(int $external_id)
