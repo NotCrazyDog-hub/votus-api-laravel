@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\LegislatorService;
+use App\Models\Legislator;
 
 class LegislatorController extends Controller
 {
@@ -35,5 +36,16 @@ class LegislatorController extends Controller
         return response()->json(
             $this->service->findByChamber($external_id, 'senate')
         );
+    }
+
+    public function index()
+    {
+        return Legislator::where('state', 'CE')
+            ->orderBy('parliamentary_name')
+            ->get();
+    }
+    public function show(Legislator $legislator)
+    {
+        return $legislator->load('committees');
     }
 }
