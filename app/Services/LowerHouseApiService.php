@@ -32,4 +32,15 @@ class LowerHouseApiService
 
         return $response->json('dados');
     }
+
+    public function getCommittees(string $id): array
+    {
+        $response = Http::withOptions(['verify' => false])->get("{$this->baseUrl}/deputados/{$id}/orgaos");
+
+        if ($response->failed()) {
+            throw new \RuntimeException("Failed to fetch committees for legislator {$id}: " . $response->status());
+        }
+
+        return $response->json('dados') ?? [];
+    }
 }

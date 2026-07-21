@@ -67,4 +67,26 @@ class SenateApiService
 
         return $mandate['PrimeiraLegislaturaDoMandato']['NumeroLegislatura'] ?? null;
     }
+
+    public function getCommittees(string $id): array
+    {
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/senador/{$id}/comissoes");
+
+        if ($response->failed()) {
+            throw new \RuntimeException("Failed to fetch committees for senator {$id}: " . $response->status());
+        }
+
+        $comissoes = $response->json('MembroComissaoParlamentar.Parlamentar.MembroComissoes.Comissao') ?? [];
+
+        if (isset($comissoes['IdentificacaoComissao'])) {
+            $comissoes = [$comissoes];
+        }
+
+        return collect($comissoes)
+            ->filter(fn ($c) => empty($c['DataFim']))
+            ->values()
+            ->all();
+    }
 }
