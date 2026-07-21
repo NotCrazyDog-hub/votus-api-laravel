@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\LegislatorService;
 use App\Models\Legislator;
+use App\Http\Resources\LegislatorResource;
+use App\Http\Resources\LegislatorProfileResource;
 
 class LegislatorController extends Controller
 {
