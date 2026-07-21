@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Enums\LegislatorStatus;
 use App\Enums\ElectoralStatus;
 
@@ -32,4 +33,10 @@ class Legislator extends Model
         'status' => LegislatorStatus::class,
         'electoral_status' => ElectoralStatus::class,
     ];
+
+    public function committees(): BelongsToMany
+    {
+        return $this->belongsToMany(Committee::class, 'committee_legislator')
+            ->withPivot(['role', 'start_date', 'end_date']);
+    }
 }
