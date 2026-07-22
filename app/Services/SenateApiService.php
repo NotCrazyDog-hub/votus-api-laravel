@@ -89,4 +89,20 @@ class SenateApiService
             ->values()
             ->all();
     }
+
+    public function getBillsByLegislator(string $id): array
+    {
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/processo", [
+                'codigoParlamentarAutor' => $id,
+                'sigla' => ['PL', 'PEC'],
+            ]);
+
+        if ($response->failed()) {
+            throw new \RuntimeException("Failed to fetch bills for senator {$id}: " . $response->status());
+        }
+
+        return $response->json() ?? [];
+    }
 }
