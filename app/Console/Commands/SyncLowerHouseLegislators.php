@@ -20,6 +20,7 @@ class SyncLowerHouseLegislators extends Command
         foreach ($ids as $id) {
             $data = $api->getDetails($id);
             $status = $data['ultimoStatus'];
+            unset($data['cpf']);
 
             Legislator::updateOrCreate(
                 ['external_id' => $data['id'], 'chamber' => 'lower_house'],

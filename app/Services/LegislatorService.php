@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
 use App\Models\Legislator;
 
 class LegislatorService
@@ -11,6 +10,7 @@ class LegislatorService
     {
         return Legislator::where('chamber', $chamber)
             ->when($state, fn ($q) => $q->where('state', $state))
+            ->orderBy('parliamentary_name')
             ->paginate(50);
     }
 
@@ -18,6 +18,7 @@ class LegislatorService
     {
         return Legislator::where('external_id', $external_id)
             ->where('chamber', $chamber)
+            ->with('committees')
             ->firstOrFail();
     }
 }

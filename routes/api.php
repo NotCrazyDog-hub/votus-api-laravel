@@ -10,7 +10,4 @@ Route::middleware('throttle:api')->group(function ()
     Route::get('/deputies/{external_id}', [LegislatorController::class, 'showDeputy']);
     Route::get('/senators', [LegislatorController::class, 'indexForSenators']);
     Route::get('/senators/{external_id}', [LegislatorController::class, 'showSenator']);
-
-    Route::get('/legislators', [LegislatorController::class, 'index']);
-    Route::get('/legislators/{legislator}', [LegislatorController::class, 'show']);
 });
