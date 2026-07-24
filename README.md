@@ -76,6 +76,12 @@ php artisan sync:legislators-senate
 php artisan sync:committees-senate
 ```
 ```bash
+php artisan sync:bills-lower-house
+```
+```bash
+php artisan sync:bills-senate
+```
+```bash
 php artisan serve
 ```
  
@@ -111,6 +117,12 @@ php artisan sync:legislators-senate
 ```bash
 php artisan sync:committees-senate
 ```
+```bash
+php artisan sync:bills-lower-house
+```
+```bash
+php artisan sync:bills-senate
+```
 
 ## 🛠️ Stack
  
@@ -123,15 +135,18 @@ php artisan sync:committees-senate
 ```
 app/
   Console/Commands/
+    SyncLowerHouseBills.php         Sincroniza proposições de deputados
     SyncLowerHouseCommittees.php    Sincroniza comissões de deputados
     SyncLowerHouseLegislators.php   Sincroniza deputados federais
+    SyncSenateBills.php             Sincroniza proposições de senadores
     SyncSenateCommittees.php        Sincroniza comissões de senadores
     SyncSenateLegislators.php       Sincroniza senadores
   Http/Controllers/
     LegislatorController.php        Endpoints da API
   Models/
-    Legislator.php                  Model da tabela legislators
+    Bill.php                        Model de proposições
     Committee.php                   Model de comissões parlamentares
+    Legislator.php                  Model da tabela legislators
   Services/
     LowerHouseApiService.php        Comunicação com API da Câmara
     SenateApiService.php            Comunicação com API do Senado
