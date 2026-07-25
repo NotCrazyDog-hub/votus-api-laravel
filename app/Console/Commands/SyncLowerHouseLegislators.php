@@ -17,41 +17,54 @@ class SyncLowerHouseLegislators extends Command
         $this->info('Found ' . count($ids) . ' legislators to sync.');
         $bar = $this->output->createProgressBar(count($ids));
 
-        foreach ($ids as $id) {
-            $data = $api->getDetails($id);
-            $status = $data['ultimoStatus'];
-            unset($data['cpf']);
+        $failed = [];
 
-            Legislator::updateOrCreate(
-                ['external_id' => $data['id'], 'chamber' => 'lower_house'],
-                [
-                    'civil_name' => $data['nomeCivil'],
-                    'parliamentary_name' => $status['nome'],
-                    'photo_url' => $status['urlFoto'],
-                    'party' => $status['siglaPartido'],
-                    'state' => $status['siglaUf'],
-                    'legislature' => $status['idLegislatura'] ?? null,
-                    'electoral_status' => match(true) {
-                        str_contains(strtolower($mandate['DescricaoParticipacao'] ?? ''), 'suplente') => 'alternate',
-                        default => 'sitting',
-                    },
-                    'status' => match(strtolower($status['situacao'] ?? '')) {
-                        'exercício' => 'active',
-                        'afastado' => 'on_leave',
-                        default => 'unknown',
-                    },
-                    'phone' => $status['gabinete']['telefone'] ?? null,
-                    'email' => $status['gabinete']['email'] ?? null,
-                    'social_media' => $data['redeSocial'] ?? [],
-                    'raw_data' => $data,
-                ]
-            );
+        foreach ($ids as $id) {
+            try {
+                $data = $api->getDetails($id);
+                $status = $data['ultimoStatus'];
+                unset($data['cpf']);
+
+                Legislator::updateOrCreate(
+                    ['external_id' => $data['id'], 'chamber' => 'lower_house'],
+                    [
+                        'civil_name' => $data['nomeCivil'],
+                        'parliamentary_name' => $status['nome'],
+                        'photo_url' => $status['urlFoto'],
+                        'party' => $status['siglaPartido'],
+                        'state' => $status['siglaUf'],
+                        'legislature' => $status['idLegislatura'] ?? null,
+                        'electoral_status' => match(true) {
+                            str_contains(strtolower($status['condicaoEleitoral'] ?? ''), 'suplente') => 'alternate',
+                            default => 'sitting',
+                        },
+                        'status' => match(strtolower($status['situacao'] ?? '')) {
+                            'exercício' => 'active',
+                            'afastado' => 'on_leave',
+                            default => 'unknown',
+                        },
+                        'phone' => $status['gabinete']['telefone'] ?? null,
+                        'email' => $status['gabinete']['email'] ?? null,
+                        'social_media' => $data['redeSocial'] ?? [],
+                        'raw_data' => $data,
+                    ]
+                );
+            } catch (\Throwable $e) {
+                $failed[] = $id;
+                $this->newLine();
+                $this->error("Falha ao sincronizar deputado {$id}: {$e->getMessage()}");
+            }
 
             $bar->advance();
         }
 
         $bar->finish();
         $this->newLine();
+
+        if (! empty($failed)) {
+            $this->warn(count($failed) . ' deputado(s) falharam: ' . implode(', ', $failed));
+        }
+
         $this->info('Sync completed.');
     }
 }
