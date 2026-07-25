@@ -114,7 +114,8 @@ php artisan sync:bills-senate
  
 * [Laravel](https://laravel.com) - API Backend
 * [Supabase](https://supabase.com) - Banco de dados PostgreSQL
-* [Laravel Cloud](https://cloud.laravel.com) - Deploy
+* [Render](https://render.com/) - Deploy
+* [cron-job.org](https://cron-job.org/en/) - Disparo das tarefas agendadas com Cron
 
  ## 📁 Estrutura do projeto
  
