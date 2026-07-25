@@ -64,22 +64,7 @@ DB_CONNECTION=sqlite
 php artisan migrate
 ```
 ```bash
-php artisan sync:legislators-lower-house
-```
-```bash
-php artisan sync:committees-lower-house
-```
-```bash
-php artisan sync:legislators-senate
-```
-```bash
-php artisan sync:committees-senate
-```
-```bash
-php artisan sync:bills-lower-house
-```
-```bash
-php artisan sync:bills-senate
+php artisan sync:legislators-lower-house && php artisan sync:committees-lower-house && php artisan sync:legislators-senate && php artisan sync:committees-senate && php artisan sync:bills-lower-house && php artisan sync:bills-senate
 ```
 ```bash
 php artisan serve
@@ -94,6 +79,7 @@ GET /api/deputies                    Lista deputados federais
 GET /api/deputies/{external_id}      Perfil de um deputado
 GET /api/senators                    Lista senadores
 GET /api/senators/{external_id}      Perfil de um senador
+GET /api/schedule/run/{token}        Dispara o Laravel Scheduler via HTTP
 ```
 
 ## 🔄 Sincronização de dados
@@ -143,6 +129,7 @@ app/
     SyncSenateLegislators.php       Sincroniza senadores
   Http/Controllers/
     LegislatorController.php        Endpoints da API
+    SchedulerController.php         Execução de tarefas agendadas via HTTP
   Models/
     Bill.php                        Model de proposições
     Committee.php                   Model de comissões parlamentares
