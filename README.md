@@ -21,7 +21,7 @@ Essas instruções permitirão que você obtenha uma cópia do projeto em opera�
 
 ### 📋 Pré-requisitos
 
-* PHP 8.2+
+* PHP 8.3+
 * Composer
 
 ### 🔧 Instalação
