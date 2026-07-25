@@ -13,4 +13,4 @@ Route::middleware('throttle:api')->group(function ()
     Route::get('/senators/{external_id}', [LegislatorController::class, 'showSenator']);
 });
 
-Route::get('/schedule/run', [SchedulerController::class, 'run']);
+Route::get('/schedule/run/{token}', [SchedulerController::class, 'run']);
