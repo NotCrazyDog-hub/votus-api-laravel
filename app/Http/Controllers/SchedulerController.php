@@ -14,7 +14,7 @@ class SchedulerController extends Controller
         'bills-lower-house',
         'bills-senate',
     ];
-    
+
     public function run(string $token)
     {
         if ($token !== config('app.scheduler_token')) {
@@ -38,6 +38,10 @@ class SchedulerController extends Controller
 
         Artisan::call("sync:{$command}");
 
-        return response()->json(['status' => 'executed', 'command' => $command]);
+        return response()->json([
+            'status' => 'executed',
+            'command' => $command,
+            'output' => Artisan::output(),
+        ]);
     }
 }
