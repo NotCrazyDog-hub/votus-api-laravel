@@ -15,16 +15,16 @@ class SchedulerController extends Controller
         'bills-senate',
     ];
 
-    public function run(string $token)
-    {
-        if ($token !== config('app.scheduler_token')) {
-            abort(403);
-        }
+    // public function run(string $token)
+    // {
+    //     if ($token !== config('app.scheduler_token')) {
+    //         abort(403);
+    //     }
 
-        Artisan::call('schedule:run');
+    //     Artisan::call('schedule:run');
 
-        return response()->json(['status' => 'scheduled tasks executed']);
-    }
+    //     return response()->json(['status' => 'scheduled tasks executed']);
+    // }
 
     public function runSingle(string $command, string $token)
     {
