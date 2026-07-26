@@ -26,7 +26,7 @@ class SyncSenateBills extends Command
                     $type = explode(' ', $b['identificacao'] ?? '')[0] ?? null;
 
                     $bill = Bill::updateOrCreate(
-                        ['external_id' => $b['id'], 'chamber' => 'senate'],
+                        ['external_id' => (string) $b['id'], 'chamber' => 'senate'],
                         [
                             'type' => $type,
                             'summary' => $b['ementa'] ?? null,
