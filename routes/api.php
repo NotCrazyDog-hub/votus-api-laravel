@@ -10,3 +10,4 @@ Route::get('/senators', [LegislatorController::class, 'indexForSenators']);
 Route::get('/senators/{external_id}', [LegislatorController::class, 'showSenator']);
 
 Route::get('/schedule/run/{token}', [SchedulerController::class, 'run']);
+Route::get('/sync/run/{command}/{token}', [SchedulerController::class, 'runSingle']);
