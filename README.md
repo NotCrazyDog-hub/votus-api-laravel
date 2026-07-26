@@ -98,13 +98,13 @@ php artisan sync:legislators-lower-house
 php artisan sync:committees-lower-house
 ```
 ```bash
+php artisan sync:bills-lower-house
+```
+```bash
 php artisan sync:legislators-senate
 ```
 ```bash
 php artisan sync:committees-senate
-```
-```bash
-php artisan sync:bills-lower-house
 ```
 ```bash
 php artisan sync:bills-senate
