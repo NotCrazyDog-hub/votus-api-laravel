@@ -13,7 +13,7 @@ class SenateApiService
     {
         return Http::withOptions(['verify' => false])
             ->withHeaders(['Accept' => 'application/json'])
-            ->timeout(30)
+            ->timeout(15)
             ->retry(3, 2000)
             ->get($url, $query);
     }
