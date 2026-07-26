@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 
 class SchedulerController extends Controller
 {
@@ -36,12 +37,24 @@ class SchedulerController extends Controller
             abort(404);
         }
 
-        Artisan::call("sync:{$command}");
+        $lockKey = "sync-lock:{$command}";
 
-        return response()->json([
-            'status' => 'executed',
-            'command' => $command,
-            'output' => Artisan::output(),
-        ]);
+        if (Cache::has($lockKey)) {
+            return response()->json(['status' => 'skipped', 'reason' => 'already running'], 409);
+        }
+
+        Cache::put($lockKey, true, now()->addMinutes(20));
+
+        try {
+            Artisan::call("sync:{$command}");
+
+            return response()->json([
+                'status' => 'executed',
+                'command' => $command,
+                'output' => Artisan::output(),
+            ]);
+        } finally {
+            Cache::forget($lockKey);
+        }
     }
 }
