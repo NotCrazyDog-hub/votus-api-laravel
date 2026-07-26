@@ -9,18 +9,11 @@ class SenateApiService
 {
     protected string $baseUrl = 'https://legis.senado.leg.br/dadosabertos';
 
-    protected function get(string $url, array $query = []): \Illuminate\Http\Client\Response
-    {
-        return Http::withOptions(['verify' => false])
-            ->withHeaders(['Accept' => 'application/json'])
-            ->timeout(15)
-            ->retry(3, 2000)
-            ->get($url, $query);
-    }
-
     public function listParliamentarians(?string $state = null): array
     {
-        $response = $this->get("{$this->baseUrl}/senador/lista/atual");
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/senador/lista/atual");
 
         if ($response->failed()) {
             throw new \RuntimeException('Failed to fetch senators list: ' . $response->status());
@@ -39,7 +32,9 @@ class SenateApiService
 
     public function getDetails(string $id): array
     {
-        $response = $this->get("{$this->baseUrl}/senador/{$id}");
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/senador/{$id}");
 
         if ($response->failed()) {
             throw new \RuntimeException("Failed to fetch details for senator {$id}: " . $response->status());
@@ -75,7 +70,9 @@ class SenateApiService
 
     public function getCommittees(string $id): array
     {
-        $response = $this->get("{$this->baseUrl}/senador/{$id}/comissoes");
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/senador/{$id}/comissoes");
 
         if ($response->failed()) {
             throw new \RuntimeException("Failed to fetch committees for senator {$id}: " . $response->status());
@@ -95,10 +92,12 @@ class SenateApiService
 
     public function getBillsByLegislator(string $id): array
     {
-        $response = $this->get("{$this->baseUrl}/processo", [
-            'codigoParlamentarAutor' => $id,
-            'sigla' => ['PL', 'PEC'],
-        ]);
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/processo", [
+                'codigoParlamentarAutor' => $id,
+                'sigla' => ['PL', 'PEC'],
+            ]);
 
         if ($response->failed()) {
             throw new \RuntimeException("Failed to fetch bills for senator {$id}: " . $response->status());
