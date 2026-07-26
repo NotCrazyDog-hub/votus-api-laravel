@@ -24,7 +24,7 @@ class SyncLowerHouseBills extends Command
 
                 foreach ($bills as $b) {
                     $bill = Bill::updateOrCreate(
-                        ['external_id' => $b['id'], 'chamber' => 'lower_house'],
+                        ['external_id' => (string) $b['id'], 'chamber' => 'lower_house'],
                         [
                             'type' => $b['siglaTipo'] ?? null,
                             'summary' => $b['ementa'] ?? null,
