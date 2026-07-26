@@ -27,7 +27,7 @@ class SyncLowerHouseCommittees extends Command
 
                 foreach ($ativos as $o) {
                     $committee = Committee::updateOrCreate(
-                        ['external_id' => $o['idOrgao'], 'chamber' => 'lower_house'],
+                        ['external_id' => (string) $o['idOrgao'], 'chamber' => 'lower_house'],
                         [
                             'name' => $o['nomeOrgao'] ?? null,
                             'acronym' => $o['siglaOrgao'] ?? null,
