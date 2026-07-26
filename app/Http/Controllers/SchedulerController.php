@@ -46,12 +46,11 @@ class SchedulerController extends Controller
         Cache::put($lockKey, true, now()->addMinutes(20));
 
         try {
-            Artisan::call("sync:{$command}");
+            $exitCode = Artisan::call("sync:{$command}", ['--no-ansi' => true]);
 
             return response()->json([
-                'status' => 'executed',
+                'status' => $exitCode === 0 ? 'success' : 'failed',
                 'command' => $command,
-                'output' => Artisan::output(),
             ]);
         } finally {
             Cache::forget($lockKey);
