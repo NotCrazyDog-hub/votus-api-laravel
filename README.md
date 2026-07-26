@@ -128,20 +128,22 @@ app/
     SyncSenateBills.php             Sincroniza proposições de senadores
     SyncSenateCommittees.php        Sincroniza comissões de senadores
     SyncSenateLegislators.php       Sincroniza senadores
-  Http/Controllers/
-    LegislatorController.php        Endpoints da API
-    SchedulerController.php         Execução de tarefas agendadas via HTTP
-  Models/
-    Bill.php                        Model de proposições
-    Committee.php                   Model de comissões parlamentares
-    Legislator.php                  Model da tabela legislators
-  Services/
-    LowerHouseApiService.php        Comunicação com API da Câmara
-    SenateApiService.php            Comunicação com API do Senado
-    LegislatorService.php           Queries no banco de dados
   Enums/
     LegislatorStatus.php            active | on_leave | unknown
     ElectoralStatus.php             sitting | alternate | unknown
+  Http/Controllers/
+    LegislatorController.php        Endpoints da API
+    SchedulerController.php         Execução de tarefas agendadas via HTTP
+  Http/Resources/
+    LegislatorResource.php          Formata os campos expostos na API
+Models/
+  Bill.php                        Model de proposições
+  Committee.php                   Model de comissões parlamentares
+  Legislator.php                  Model da tabela legislators
+Services/
+  LowerHouseApiService.php        Comunicação com API da Câmara
+  SenateApiService.php            Comunicação com API do Senado
+  LegislatorService.php           Queries no banco de dados
 ```
 
 ---
