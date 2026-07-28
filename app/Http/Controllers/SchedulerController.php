@@ -43,6 +43,25 @@ class SchedulerController extends Controller
         ]);
     }
 
+    public function runCommandDebug(string $token, string $command)
+    {
+        if ($token !== config('app.scheduler_token')) {
+            abort(403);
+        }
+
+        if (! isset($this->commands[$command])) {
+            abort(404);
+        }
+
+        $exitCode = Artisan::call($this->commands[$command]);
+
+        return response()->json([
+            'status' => $exitCode === 0 ? 'success' : 'failed',
+            'command' => $this->commands[$command],
+            'output' => Artisan::output(),
+        ]);
+    }
+
     public function ping()
     {
         return response()->json(['status' => 'alive']);
