@@ -26,11 +26,20 @@ class SchedulerController extends Controller
             abort(404);
         }
 
-        $exitCode = Artisan::call($this->commands[$command]);
+        $artisanCommand = $this->commands[$command];
+        $logFile = storage_path("logs/schedule-{$command}.log");
+
+        $shellCommand = sprintf(
+            'nohup php artisan %s >> %s 2>&1 &',
+            escapeshellarg($artisanCommand),
+            escapeshellarg($logFile)
+        );
+
+        exec($shellCommand);
 
         return response()->json([
-            'status' => $exitCode === 0 ? 'success' : 'failed',
-            'command' => $this->commands[$command],
+            'status' => 'started',
+            'command' => $artisanCommand,
         ]);
     }
 
