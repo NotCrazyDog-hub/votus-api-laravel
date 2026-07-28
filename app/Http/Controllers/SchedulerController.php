@@ -43,24 +43,36 @@ class SchedulerController extends Controller
         ]);
     }
 
-    public function runCommandDebug(string $token, string $command)
-    {
-        if ($token !== config('app.scheduler_token')) {
-            abort(403);
-        }
+    // SchedulerController.php
 
-        if (! isset($this->commands[$command])) {
-            abort(404);
-        }
-
-        $exitCode = Artisan::call($this->commands[$command]);
-
-        return response()->json([
-            'status' => $exitCode === 0 ? 'success' : 'failed',
-            'command' => $this->commands[$command],
-            'output' => Artisan::output(),
-        ]);
+public function runCommandDebug(string $token, string $command)
+{
+    if ($token !== config('app.scheduler_token')) {
+        abort(403);
     }
+
+    if (! isset($this->commands[$command])) {
+        abort(404);
+    }
+
+    $artisanCommand = $this->commands[$command];
+    $logFile = storage_path("logs/schedule-{$command}.log");
+    $basePath = base_path();
+
+    $shellCommand = sprintf(
+        'cd %s && nohup php artisan %s >> %s 2>&1 &',
+        escapeshellarg($basePath),
+        escapeshellarg($artisanCommand),
+        escapeshellarg($logFile)
+    );
+
+    exec($shellCommand);
+
+    return response()->json([
+        'status' => 'started',
+        'command' => $artisanCommand,
+    ]);
+}
 
     public function ping()
     {
