@@ -34,6 +34,11 @@ class SchedulerController extends Controller
         ]);
     }
 
+    public function ping()
+    {
+        return response()->json(['status' => 'alive']);
+    }
+
     // public function run(string $token)
     // {
     //     if ($token !== config('app.scheduler_token')) {
