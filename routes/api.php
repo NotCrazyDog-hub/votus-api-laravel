@@ -9,6 +9,5 @@ Route::get('/deputies/{external_id}', [LegislatorController::class, 'showDeputy'
 Route::get('/senators', [LegislatorController::class, 'indexForSenators']);
 Route::get('/senators/{external_id}', [LegislatorController::class, 'showSenator']);
 
-Route::get('/schedule/run/{token}', [SchedulerController::class, 'run']);
-
-Route::get('/debug/senate-legislators/{token}', [SchedulerController::class, 'debugSenateLegislators']);
+// Route::get('/schedule/run/{token}', [SchedulerController::class, 'run']);
+Route::get('/schedule/run/{token}/{command}', [SchedulerController::class, 'runCommand']);
