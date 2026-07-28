@@ -17,4 +17,18 @@ class SchedulerController extends Controller
 
         return response()->json(['status' => 'scheduled tasks executed']);
     }
+
+    public function debugSenateLegislators(string $token)
+    {
+        if ($token !== config('app.scheduler_token')) {
+            abort(403);
+        }
+
+        Artisan::call('sync:legislators-senate');
+
+        return response()->json([
+            'status' => 'executed',
+            'output' => Artisan::output(),
+        ]);
+    }
 }
