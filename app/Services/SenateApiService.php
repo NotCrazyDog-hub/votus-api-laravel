@@ -43,6 +43,51 @@ class SenateApiService
         return $response->json('DetalheParlamentar.Parlamentar');
     }
 
+    public function getMandate(string $id): ?array
+    {
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/senador/{$id}/mandatos");
+
+        if ($response->failed()) {
+            throw new \RuntimeException("Failed to fetch mandate for senator {$id}: " . $response->status());
+        }
+
+        $mandatos = $response->json('MandatoParlamentar.Parlamentar.Mandatos.Mandato') ?? [];
+
+        if (isset($mandatos['CodigoMandato'])) {
+            $mandatos = [$mandatos];
+        }
+
+        if (empty($mandatos)) {
+            return null;
+        }
+
+        return $this->selectCurrentMandate($mandatos);
+    }
+
+    protected function selectCurrentMandate(array $mandatos): array
+    {
+        $today = Carbon::today();
+
+        foreach ($mandatos as $mandato) {
+            foreach ([$mandato['PrimeiraLegislaturaDoMandato'] ?? null, $mandato['SegundaLegislaturaDoMandato'] ?? null] as $legislatura) {
+                if ($legislatura === null) {
+                    continue;
+                }
+
+                $inicio = $legislatura['DataInicio'] ?? null;
+                $fim = $legislatura['DataFim'] ?? null;
+
+                if ($inicio && $fim && $today->between(Carbon::parse($inicio), Carbon::parse($fim))) {
+                    return $mandato;
+                }
+            }
+        }
+
+        return collect($mandatos)->sortByDesc(fn ($m) => (int) ($m['CodigoMandato'] ?? 0))->first();
+    }
+
     public function currentLegislatureNumber(array $mandate): ?string
     {
         $today = Carbon::today();

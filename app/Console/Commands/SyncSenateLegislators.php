@@ -20,9 +20,8 @@ class SyncSenateLegislators extends Command
         foreach ($parliamentarians as $p) {
             try {
                 $identification = $p['IdentificacaoParlamentar'] ?? [];
-                $mandate = $p['Mandato'] ?? [];
-
                 $details = $api->getDetails($identification['CodigoParlamentar']);
+                $mandate = $api->getMandate($identification['CodigoParlamentar']) ?? [];
 
                 Legislator::updateOrCreate(
                     ['external_id' => $identification['CodigoParlamentar'], 'chamber' => 'senate'],
