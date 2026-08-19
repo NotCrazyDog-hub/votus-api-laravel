@@ -38,7 +38,7 @@ class SyncSenateLegislators extends Command
                             default => 'sitting',
                         },
                         'status' => 'active',
-                        'phone' => null,
+                        'phone' => $details['Telefones']['Telefone'][0]['NumeroTelefone'] ?? null,
                         'email' => $identification['EmailParlamentar'] ?? null,
                         'official_website' => $identification['UrlPaginaParticular'] ?? null,
                         'social_media' => [],
