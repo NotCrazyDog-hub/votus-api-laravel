@@ -21,6 +21,8 @@ class LegislatorsResource extends JsonResource
             'photo_url' => $this->photo_url,
             'party' => $this->party,
             'state' => $this->state,
+            'electoral_status' => $this->electoral_status,
+            'status' => $this->status,
         ];
     }
 }
