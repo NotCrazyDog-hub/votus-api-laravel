@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\Legislator;
 use App\Services\LowerHouseApiService;
 use Illuminate\Console\Command;
+use App\Enums\ElectoralStatus;
+use App\Enums\LegislatorStatus;
 
 class SyncLowerHouseLegislators extends Command
 {
@@ -35,13 +37,22 @@ class SyncLowerHouseLegislators extends Command
                         'state' => $status['siglaUf'],
                         'legislature' => $status['idLegislatura'] ?? null,
                         'electoral_status' => match(true) {
-                            str_contains(strtolower($status['condicaoEleitoral'] ?? ''), 'suplente') => 'alternate',
-                            default => 'sitting',
+                            str_contains(
+                                strtolower(trim($status['condicaoEleitoral'] ?? '')),
+                                'suplente'
+                            ) => ElectoralStatus::Alternate,
+
+                            str_contains(
+                                strtolower(trim($status['condicaoEleitoral'] ?? '')),
+                                'titular'
+                            ) => ElectoralStatus::Sitting,
+
+                            default => ElectoralStatus::Unknown,
                         },
-                        'status' => match(strtolower($status['situacao'] ?? '')) {
-                            'exercício' => 'active',
-                            'afastado' => 'on_leave',
-                            default => 'unknown',
+                        'status' => match(trim(strtolower($status['situacao'] ?? ''))) {
+                            'exercício' => LegislatorStatus::Active,
+                            'afastado' => LegislatorStatus::OnLeave,
+                            default => LegislatorStatus::Unknown,
                         },
                         'phone' => $status['gabinete']['telefone'] ?? null,
                         'email' => $status['gabinete']['email'] ?? null,
