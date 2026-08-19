@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\Legislator;
 use App\Services\SenateApiService;
 use Illuminate\Console\Command;
+use App\Enums\ElectoralStatus;
+use App\Enums\LegislatorStatus;
 
 class SyncSenateLegislators extends Command
 {
