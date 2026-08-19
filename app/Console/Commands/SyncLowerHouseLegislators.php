@@ -52,6 +52,7 @@ class SyncLowerHouseLegislators extends Command
                         'status' => match(trim(strtolower($status['situacao'] ?? ''))) {
                             'exercício' => LegislatorStatus::Active,
                             'afastado' => LegislatorStatus::OnLeave,
+                            'vacância' => LegislatorStatus::Former,
                             default => LegislatorStatus::Unknown,
                         },
                         'phone' => $status['gabinete']['telefone'] ?? null,
