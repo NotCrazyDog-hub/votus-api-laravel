@@ -147,13 +147,22 @@ class SenateApiService
             ->sortByDesc(fn ($e) => Carbon::parse($e['DataInicio']))
             ->first();
 
-        if (!$atual || ($atual['DataFim'] ?? null) === null) {
+        if (!$atual) {
             return LegislatorStatus::Active;
         }
 
-        return $today->lessThanOrEqualTo(Carbon::parse($atual['DataFim']))
-            ? LegislatorStatus::OnLeave
-            : LegislatorStatus::Active;
+        $temCausaAfastamento = !empty($atual['SiglaCausaAfastamento']);
+        $dataFim = $atual['DataFim'] ?? null;
+
+        if ($temCausaAfastamento && $dataFim === null) {
+            return LegislatorStatus::OnLeave;
+        }
+
+        if ($dataFim !== null && $today->lessThanOrEqualTo(Carbon::parse($dataFim))) {
+            return LegislatorStatus::OnLeave;
+        }
+
+        return LegislatorStatus::Active;
     }
 
     public function getCommittees(string $id): array
