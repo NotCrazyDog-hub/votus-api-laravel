@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use App\Enums\LegislatorStatus;
 
 class SenateApiService
 {
@@ -111,6 +112,48 @@ class SenateApiService
         }
 
         return $mandate['PrimeiraLegislaturaDoMandato']['NumeroLegislatura'] ?? null;
+    }
+
+
+    public function determineStatus(array $mandate): LegislatorStatus
+    {
+        if (empty($mandate)) {
+            return LegislatorStatus::Unknown;
+        }
+
+        $today = Carbon::today();
+
+        $legislaturas = array_filter([
+            $mandate['PrimeiraLegislaturaDoMandato'] ?? null,
+            $mandate['SegundaLegislaturaDoMandato'] ?? null,
+        ]);
+
+        $fimMandato = collect($legislaturas)
+            ->pluck('DataFim')
+            ->filter()
+            ->map(fn ($d) => Carbon::parse($d))
+            ->max();
+
+        if ($fimMandato && $today->greaterThan($fimMandato)) {
+            return LegislatorStatus::Former;
+        }
+
+        $exercicios = $mandate['Exercicios']['Exercicio'] ?? [];
+        if (isset($exercicios['CodigoExercicio'])) {
+            $exercicios = [$exercicios];
+        }
+
+        $atual = collect($exercicios)
+            ->sortByDesc(fn ($e) => Carbon::parse($e['DataInicio']))
+            ->first();
+
+        if (!$atual || ($atual['DataFim'] ?? null) === null) {
+            return LegislatorStatus::Active;
+        }
+
+        return $today->lessThanOrEqualTo(Carbon::parse($atual['DataFim']))
+            ? LegislatorStatus::OnLeave
+            : LegislatorStatus::Active;
     }
 
     public function getCommittees(string $id): array

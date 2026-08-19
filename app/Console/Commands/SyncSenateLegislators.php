@@ -47,7 +47,7 @@ class SyncSenateLegislators extends Command
 
                             default => ElectoralStatus::Unknown,
                         },
-                        'status' => 'active',
+                        'status' => $api->determineStatus($mandate),
                         'phone' => $details['Telefones']['Telefone'][0]['NumeroTelefone'] ?? null,
                         'email' => $identification['EmailParlamentar'] ?? null,
                         'official_website' => $identification['UrlPaginaParticular'] ?? null,
