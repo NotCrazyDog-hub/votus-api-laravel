@@ -138,10 +138,10 @@ app/
     SyncSenateCommittees.php        Sincroniza comissões de senadores
     SyncSenateLegislators.php       Sincroniza senadores
   Enums/
-    LegislatorStatus.php            active | on_leave | unknown
-    ElectoralStatus.php             sitting | alternate | unknown
+    ElectoralStatus.php             Status eleitoral
+    LegislatorStatus.php            Status do mandato
   Http/Controllers/
-    LegislatorController.php        Endpoints da API
+    LegislatorController.php        Listagem e exibição do perfil de parlamentares
     SchedulerController.php         Execução de tarefas agendadas via HTTP
   Http/Resources/
     LegislatorResource.php          Formata os campos expostos na API
