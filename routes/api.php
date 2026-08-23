@@ -9,4 +9,4 @@ Route::get('/deputies/{external_id}', [LegislatorController::class, 'showDeputy'
 Route::get('/senators', [LegislatorController::class, 'indexForSenators']);
 Route::get('/senators/{external_id}', [LegislatorController::class, 'showSenator']);
 
-Route::get('/schedule/ping', [SchedulerController::class, 'ping']);
+Route::get('/schedule/status', [SchedulerController::class, 'status']);

@@ -16,7 +16,7 @@ class SchedulerController extends Controller
     //     'bills-senators' => 'sync:bills-senate',
     // ];
 
-    public function ping()
+    public function status()
     {
         return response()->json(['status' => 'alive']);
     }

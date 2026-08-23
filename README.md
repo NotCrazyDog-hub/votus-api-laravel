@@ -79,7 +79,7 @@ GET /api/deputies                    Lista deputados federais
 GET /api/deputies/{external_id}      Perfil de um deputado
 GET /api/senators                    Lista senadores
 GET /api/senators/{external_id}      Perfil de um senador
-GET /api/schedule/run/{token}        Dispara o Laravel Scheduler via HTTP
+GET /api/schedule/status             Dispara o Laravel Scheduler via HTTP
 ```
 
 ## 🔄 Sincronização de dados
