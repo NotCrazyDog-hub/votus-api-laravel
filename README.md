@@ -58,6 +58,14 @@ DB_CONNECTION=sqlite
 # DB_PASSWORD=
 ```
 
+Rode o comando artisan abaixo no terminal para gerar uma string de segurança
+
+```bash
+php artisan tinker --execute="echo Str::random(40);"
+```
+
+Em seguida, copie o resultado e cole na variável "SCHEDULER_TOKEN" do .env
+
 2. Rode as migrations e sincronize os dados:
  
 ```bash
@@ -70,7 +78,7 @@ php artisan sync:legislators-lower-house && php artisan sync:committees-lower-ho
 php artisan serve
 ```
  
-A API estará disponível em `http://localhost:8000/api`.
+A API estará disponível em `http://localhost:8000`.
  
 ## 📡 Endpoints
  
