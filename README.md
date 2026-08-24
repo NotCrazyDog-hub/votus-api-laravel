@@ -29,7 +29,7 @@ Essas instruções permitirão que você obtenha uma cópia do projeto em opera�
 1. Clone o repositório e instale as dependências:
  
 ```bash
-git clone https://github.com/NotCrazyDog-hub/votus-api-laravel.git
+git clone https://github.com/NotCrazyDog-hub/votus-parliament-api.git
 ```
 ```bash
 cd votus-api-laravel
@@ -78,7 +78,7 @@ php artisan sync:legislators-lower-house && php artisan sync:committees-lower-ho
 php artisan serve
 ```
  
-A API estará disponível em `http://localhost:8000`.
+A API estará disponível em `http://localhost:8000`
  
 ## 📡 Endpoints
  
@@ -92,7 +92,7 @@ GET /api/schedule/status             Dispara o Laravel Scheduler via HTTP
 
 ## 🔄 Sincronização de dados
  
-Os dados são sincronizados semanalmente via Laravel Scheduler, a partir das APIs públicas:
+A sincronização semanal via Laravel Scheduler está em fases de testes, a partir das APIs públicas:
  
 * **Câmara dos Deputados:** `dadosabertos.camara.leg.br/api/v2`
 * **Senado Federal:** `legis.senado.leg.br/dadosabertos`
