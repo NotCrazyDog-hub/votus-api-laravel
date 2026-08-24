@@ -25,6 +25,14 @@ class SyncSenateLegislators extends Command
                 $details = $api->getDetails($identification['CodigoParlamentar']);
                 $mandate = $api->getMandate($identification['CodigoParlamentar']) ?? [];
 
+                $isAlternate = str_contains(strtolower(trim($mandate['DescricaoParticipacao'] ?? '')), 'suplente');
+
+                $electoralStatus = match(true) {
+                    $isAlternate => ElectoralStatus::Alternate,
+                    str_contains(strtolower(trim($mandate['DescricaoParticipacao'] ?? '')), 'titular') => ElectoralStatus::Sitting,
+                    default => ElectoralStatus::Unknown,
+                };
+
                 Legislator::updateOrCreate(
                     ['external_id' => $identification['CodigoParlamentar'], 'chamber' => 'senate'],
                     [
@@ -34,20 +42,8 @@ class SyncSenateLegislators extends Command
                         'party' => $identification['SiglaPartidoParlamentar'] ?? null,
                         'state' => $identification['UfParlamentar'] ?? null,
                         'legislature' => $api->currentLegislatureNumber($mandate),
-                        'electoral_status' => match(true) {
-                            str_contains(
-                                strtolower(trim($mandate['DescricaoParticipacao'] ?? '')),
-                                'suplente'
-                            ) => ElectoralStatus::Alternate,
-
-                            str_contains(
-                                strtolower(trim($mandate['DescricaoParticipacao'] ?? '')),
-                                'titular'
-                            ) => ElectoralStatus::Sitting,
-
-                            default => ElectoralStatus::Unknown,
-                        },
-                        'status' => $api->determineStatus($mandate),
+                        'electoral_status' => $electoralStatus,
+                        'status' => $api->determineStatus($mandate, $isAlternate),
                         'phone' => $details['Telefones']['Telefone'][0]['NumeroTelefone'] ?? null,
                         'email' => $identification['EmailParlamentar'] ?? null,
                         'official_website' => $identification['UrlPaginaParticular'] ?? null,

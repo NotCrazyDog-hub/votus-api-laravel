@@ -115,7 +115,7 @@ class SenateApiService
     }
 
 
-    public function determineStatus(array $mandate): LegislatorStatus
+    public function determineStatus(array $mandate, bool $isAlternate = false): LegislatorStatus
     {
         if (empty($mandate)) {
             return LegislatorStatus::Unknown;
@@ -143,26 +143,32 @@ class SenateApiService
             $exercicios = [$exercicios];
         }
 
-        $atual = collect($exercicios)
+        $exercicioAtual = collect($exercicios)
             ->sortByDesc(fn ($e) => Carbon::parse($e['DataInicio']))
             ->first();
 
-        if (!$atual) {
-            return LegislatorStatus::Active;
+        $statusEmExercicio = $isAlternate ? LegislatorStatus::Inactive : LegislatorStatus::Active;
+
+        if (!$exercicioAtual) {
+            return $statusEmExercicio;
         }
 
-        $temCausaAfastamento = !empty($atual['SiglaCausaAfastamento']);
-        $dataFim = $atual['DataFim'] ?? null;
+        $temCausaAfastamento = !empty($exercicioAtual['SiglaCausaAfastamento']);
+        $dataFim = $exercicioAtual['DataFim'] ?? null;
 
-        if ($temCausaAfastamento && $dataFim === null) {
+        if (!$isAlternate && $temCausaAfastamento && $dataFim === null) {
             return LegislatorStatus::OnLeave;
         }
 
-        if ($dataFim !== null && $today->lessThanOrEqualTo(Carbon::parse($dataFim))) {
+        if (!$isAlternate && $dataFim !== null && $today->lessThanOrEqualTo(Carbon::parse($dataFim))) {
             return LegislatorStatus::OnLeave;
         }
 
-        return LegislatorStatus::Active;
+        if ($isAlternate && $dataFim !== null && $today->greaterThan(Carbon::parse($dataFim))) {
+            return LegislatorStatus::Inactive;
+        }
+
+        return $statusEmExercicio;
     }
 
     public function getCommittees(string $id): array
