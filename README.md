@@ -92,7 +92,7 @@ GET /api/schedule/status             Dispara o Laravel Scheduler via HTTP
 
 ## 🔄 Sincronização de dados
  
-Os dados são sincronizados semanalmente via Laravel Scheduler, a partir das APIs públicas:
+A sincronização semanal via Laravel Scheduler está em fases de testes, a partir das APIs públicas:
  
 * **Câmara dos Deputados:** `dadosabertos.camara.leg.br/api/v2`
 * **Senado Federal:** `legis.senado.leg.br/dadosabertos`
