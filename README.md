@@ -24,10 +24,10 @@ Essas instruções permitirão que você obtenha uma cópia do projeto em opera�
 1. Clone o repositório e instale as dependências:
  
 ```bash
-git clone https://github.com/NotCrazyDog-hub/votus-parliament-api.git
+git clone https://github.com/NotCrazyDog-hub/votus-general-api.git
 ```
 ```bash
-cd votus-api-laravel
+cd votus-general-api
 ```
 ```bash
 composer install
