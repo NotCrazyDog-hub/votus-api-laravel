@@ -1,6 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Schedule;
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Artisan;
 
 // O agendamento migrou para rotas HTTP individuais disparadas externamente
 // pelo cron-job.org, já que o Render (plano free) não suporta cron nativo
@@ -13,3 +14,7 @@ use Illuminate\Support\Facades\Schedule;
 // Schedule::command('sync:legislators-senate')->everyFiveMinutes()->withoutOverlapping(10);
 // Schedule::command('sync:committees-senate')->everyFiveMinutes()->withoutOverlapping(10);
 // Schedule::command('sync:bills-senate')->everyFiveMinutes()->withoutOverlapping(10);
+
+Artisan::command('inspire', function () {
+    $this->comment(Inspiring::quote());
+})->purpose('Display an inspiring quote');
