@@ -5,9 +5,11 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use App\Enums\LegislatorStatus;
+use App\Services\Concerns\NormalizesProfessionNames;
 
 class SenateApiService
 {
+    use NormalizesProfessionNames;
     protected string $baseUrl = 'https://legis.senado.leg.br/dadosabertos';
 
     public function listParliamentarians(?string $state = null): array
@@ -207,5 +209,35 @@ class SenateApiService
         }
 
         return $response->json() ?? [];
+    }
+
+    public function getProfessions(string $id): array
+    {
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/senador/{$id}/historicoAcademico");
+
+        if ($response->failed()) {
+            throw new \RuntimeException("Failed to fetch professions for senator {$id}: " . $response->status());
+        }
+
+        $professions = $response->json('HistoricoAcademicoParlamentar.Parlamentar.Profissoes.Profissao') ?? [];
+
+        if (isset($professions['NomeProfissao'])) {
+            $professions = [$professions];
+        }
+
+        return collect($professions)
+            ->filter(fn ($p) => !empty($p['NomeProfissao']))
+            ->map(fn ($p) => [
+                'original_name' => $p['NomeProfissao'],
+                'normalized_name' => $this->normalizeProfessionName($p['NomeProfissao']),
+                'source' => 'senate',
+                'is_primary' => ($p['IndicadorAtividadePrincipal'] ?? null) === 'Sim',
+                'registered_at' => null,
+                'camara_code' => null,
+            ])
+            ->values()
+            ->all();
     }
 }
