@@ -83,6 +83,9 @@ GET /api/deputies/{external_id}      Perfil de um deputado
 GET /api/senators                    Lista senadores
 GET /api/senators/{external_id}      Perfil de um senador
 GET /api/schedule/status             Dispara o Laravel Scheduler via HTTP
+POST /api/noticias                   Cadastro de notícias
+GET /api/noticias                    Listagem de notícias
+GET /api/noticias/{noticiaas}        Exibição detalhada de uma notícias
 ```
 
 ## 🔄 Sincronização de dados
@@ -120,6 +123,7 @@ php artisan sync:bills-senate
 * [Docker](https://www.docker.com/) - Containerização e ambiente de execução da API no Render
 * [Render](https://render.com/) - Plataforma de hospedagem
 * [cron-job.org](https://cron-job.org/en/) - Disparo das tarefas agendadas com Cron
+* [n8n](https://n8n.io/) - Automação de tarefas
 
  ## 📁 Estrutura do projeto
  
@@ -137,12 +141,14 @@ app/
     LegislatorStatus.php            Status do mandato
   Http/Controllers/
     LegislatorController.php        Listagem e exibição do perfil de parlamentares
+    NewsController.php              Cadastro e listagem de notícias com filtro de relevância
     SchedulerController.php         Execução de tarefas agendadas via HTTP
   Http/Resources/
     LegislatorResource.php          Formata os campos expostos na API
 Models/
   Bill.php                        Model de proposições
   Committee.php                   Model de comissões parlamentares
+  News.php                        Model de notícias
   Legislator.php                  Model da tabela legislators
 Services/
   LowerHouseApiService.php        Comunicação com API da Câmara
