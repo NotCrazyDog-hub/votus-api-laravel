@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Concerns;
+use Illuminate\Support\Str;
 
 trait NormalizesProfessionNames
 {
@@ -8,7 +9,7 @@ trait NormalizesProfessionNames
     {
         $name = preg_replace('/\(a\)/i', '', $name);
         $name = trim($name);
-        $name = iconv('UTF-8', 'ASCII//TRANSLIT', $name) ?: $name;
+        $name = Str::ascii($name);
 
         return mb_strtolower($name);
     }
