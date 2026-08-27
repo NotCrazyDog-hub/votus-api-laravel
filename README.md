@@ -130,30 +130,32 @@ php artisan sync:bills-senate
 ```
 app/
   Console/Commands/
-    SyncLowerHouseBills.php         Sincroniza proposições de deputados
-    SyncLowerHouseCommittees.php    Sincroniza comissões de deputados
-    SyncLowerHouseLegislators.php   Sincroniza deputados federais
-    SyncSenateBills.php             Sincroniza proposições de senadores
-    SyncSenateCommittees.php        Sincroniza comissões de senadores
-    SyncSenateLegislators.php       Sincroniza senadores
+    SyncLowerHouseBills.php           Sincroniza proposições de deputados
+    SyncLowerHouseCommittees.php      Sincroniza comissões de deputados
+    SyncLowerHouseLegislators.php     Sincroniza deputados federais
+    SyncSenateBills.php               Sincroniza proposições de senadores
+    SyncSenateCommittees.php          Sincroniza comissões de senadores
+    SyncSenateLegislators.php         Sincroniza senadores
   Enums/
-    ElectoralStatus.php             Status eleitoral
-    LegislatorStatus.php            Status do mandato
+    ElectoralStatus.php               Status eleitoral
+    LegislatorStatus.php              Status do mandato
   Http/Controllers/
-    LegislatorController.php        Listagem e exibição do perfil de parlamentares
-    NewsController.php              Cadastro e listagem de notícias com filtro de relevância
-    SchedulerController.php         Execução de tarefas agendadas via HTTP
+    LegislatorController.php          Listagem e exibição do perfil de parlamentares
+    NewsController.php                Cadastro e listagem de notícias com filtro de relevância
+    SchedulerController.php           Execução de tarefas agendadas via HTTP
   Http/Resources/
-    LegislatorResource.php          Formata os campos expostos na API
+    LegislatorResource.php            Formata os campos expostos na API
 Models/
-  Bill.php                        Model de proposições
-  Committee.php                   Model de comissões parlamentares
-  News.php                        Model de notícias
-  Legislator.php                  Model da tabela legislators
+  Bill.php                          Model de proposições
+  Committee.php                     Model de comissões parlamentares
+  News.php                          Model de notícias
+  Legislator.php                    Model da tabela legislators
 Services/
-  LowerHouseApiService.php        Comunicação com API da Câmara
-  SenateApiService.php            Comunicação com API do Senado
-  LegislatorService.php           Queries no banco de dados
+  Concerns/
+    NormalizesProfessionNames.php     Padronização dos nomes das profissões
+  LowerHouseApiService.php          Comunicação com API da Câmara
+  SenateApiService.php              Comunicação com API do Senado
+  LegislatorService.php             Queries no banco de dados
 ```
 
 ---
