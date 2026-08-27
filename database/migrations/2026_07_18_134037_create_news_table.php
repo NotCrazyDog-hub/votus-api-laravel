@@ -10,17 +10,17 @@ return new class extends Migration
     {
         Schema::create('noticias', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->text('resumo_original')->nullable();
-            $table->text('resumo_ia');
+            $table->string('title');
+            $table->text('original_summary')->nullable();
+            $table->text('ai_summary');
             $table->string('url')->unique();
-            $table->string('fonte')->default('Agência Brasil');
-            $table->string('categoria')->nullable();
-            $table->timestamp('data_publicacao');
-            $table->timestamp('data_importacao')->useCurrent();
-            $table->unsignedTinyInteger('score_relevancia');
-            $table->json('palavras_chave');
-            $table->boolean('publicar')->default(true);
+            $table->string('source')->default('Agência Brasil');
+            $table->string('category')->nullable();
+            $table->timestamp('published_at');
+            $table->timestamp('imported_at')->useCurrent();
+            $table->unsignedTinyInteger('relevance_score');
+            $table->json('keywords');
+            $table->boolean('published')->default(true);
             $table->timestamps();
         });
     }

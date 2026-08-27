@@ -11,17 +11,17 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'titulo' => 'required|string|max:255',
-            'resumo_original' => 'nullable|string',
-            'resumo_ia' => 'required|string',
+            'title' => 'required|string|max:255',
+            'original_summary' => 'nullable|string',
+            'ai_summary' => 'required|string',
             'url' => 'required|url',
-            'fonte' => 'nullable|string|max:255',
-            'categoria' => 'nullable|string|max:255',
-            'data_publicacao' => 'required|date',
-            'score_relevancia' => 'required|integer|min:0|max:10',
-            'palavras_chave' => 'required|array',
-            'palavras_chave.*' => 'string',
-            'publicar' => 'boolean',
+            'source' => 'nullable|string|max:255',
+            'category' => 'nullable|string|max:255',
+            'published_at' => 'required|date',
+            'relevance_score' => 'required|integer|min:0|max:10',
+            'keywords' => 'required|array',
+            'keywords.*' => 'string',
+            'published' => 'boolean',
         ]);
 
         if ($validator->fails()) {

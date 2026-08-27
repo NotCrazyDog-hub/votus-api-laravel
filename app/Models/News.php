@@ -9,23 +9,23 @@ class News extends Model
     protected $table = 'noticias';
 
     protected $fillable = [
-        'titulo',
-        'resumo_original',
-        'resumo_ia',
+        'title',
+        'original_summary',
+        'ai_summary',
         'url',
-        'fonte',
-        'categoria',
-        'data_publicacao',
-        'data_importacao',
-        'score_relevancia',
-        'palavras_chave',
-        'publicar',
+        'source',
+        'category',
+        'published_at',
+        'imported_at',
+        'relevance_score',
+        'keywords',
+        'published',
     ];
 
     protected $casts = [
-        'palavras_chave' => 'array',
-        'data_publicacao' => 'datetime',
-        'data_importacao' => 'datetime',
-        'publicar' => 'boolean',
+        'keywords' => 'array',
+        'published_at' => 'datetime',
+        'imported_at' => 'datetime',
+        'published' => 'boolean',
     ];
 }
