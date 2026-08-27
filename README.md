@@ -83,9 +83,9 @@ GET /api/deputies/{external_id}      Perfil de um deputado
 GET /api/senators                    Lista senadores
 GET /api/senators/{external_id}      Perfil de um senador
 GET /api/schedule/status             Dispara o Laravel Scheduler via HTTP
-POST /api/noticias                   Cadastro de notícias
-GET /api/noticias                    Listagem de notícias
-GET /api/noticias/{noticiaas}        Exibição detalhada de uma notícias
+POST /api/news                       Cadastro de notícias
+GET /api/news                        Listagem de notícias
+GET /api/news/{news}                 Exibição detalhada de uma notícias
 ```
 
 ## 🔄 Sincronização de dados
