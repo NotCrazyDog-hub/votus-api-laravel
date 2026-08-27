@@ -11,6 +11,6 @@ Route::get('/senators', [LegislatorController::class, 'indexForSenators']);
 Route::get('/senators/{external_id}', [LegislatorController::class, 'showSenator']);
 Route::get('/schedule/status', [SchedulerController::class, 'status']);
 
-Route::post('/noticias', [NewsController::class, 'store']);
-Route::get('/noticias', [NewsController::class, 'index']);
-Route::get('/noticias/{noticia}', [NewsController::class, 'show']);
+Route::post('/news', [NewsController::class, 'store']);
+Route::get('/news', [NewsController::class, 'index']);
+Route::get('/news/{news}', [NewsController::class, 'show']);

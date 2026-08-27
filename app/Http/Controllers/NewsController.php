@@ -31,41 +31,41 @@ class NewsController extends Controller
             ], 422);
         }
 
-        $dados = $validator->validated();
+        $data = $validator->validated();
 
-        $noticia = News::firstOrCreate(
-            ['url' => $dados['url']],
-            $dados
+        $news = News::firstOrCreate(
+            ['url' => $data['url']],
+            $data
         );
 
         return response()->json([
-            'message' => $noticia->wasRecentlyCreated ? 'Notícia criada' : 'Notícia já existia',
-            'data' => $noticia,
-        ], $noticia->wasRecentlyCreated ? 201 : 200);
+            'message' => $news->wasRecentlyCreated ? 'Notícia criada' : 'Notícia já existia',
+            'data' => $news,
+        ], $news->wasRecentlyCreated ? 201 : 200);
     }
 
     public function index(Request $request)
     {
-        $query = News::query()->where('publicar', true);
+        $query = News::query()->where('published', true);
 
-        if ($request->has('busca')) {
-            $query->where('titulo', 'like', '%' . $request->busca . '%');
+        if ($request->has('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        if ($request->has('relevancia_minima')) {
-            $query->where('score_relevancia', '>=', $request->relevancia_minima);
+        if ($request->has('relevance_min')) {
+            $query->where('relevance_score', '>=', $request->relevance_min);
         }
 
-        $ordenacao = $request->get('ordenar_por', 'data_publicacao');
-        $direcao = $request->get('direcao', 'desc');
+        $sortBy = $request->get('sort_by', 'published_at');
+        $direction = $request->get('direction', 'desc');
 
         return response()->json(
-            $query->orderBy($ordenacao, $direcao)->paginate(15)
+            $query->orderBy($sortBy, $direction)->paginate(15)
         );
     }
 
-    public function show(News $noticia)
+    public function show(News $news)
     {
-        return response()->json($noticia);
+        return response()->json($news);
     }
 }
