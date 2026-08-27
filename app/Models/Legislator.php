@@ -44,4 +44,11 @@ class Legislator extends Model
     {
         return $this->belongsToMany(Bill::class, 'bill_legislator');
     }
+
+    public function professions(): BelongsToMany
+    {
+        return $this->belongsToMany(Profession::class)
+            ->withPivot(['source', 'original_name', 'is_primary', 'registered_at'])
+            ->withTimestamps();
+    }
 }

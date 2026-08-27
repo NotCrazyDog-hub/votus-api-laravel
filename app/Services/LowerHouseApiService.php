@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use App\Services\Concerns\NormalizesProfessionNames;
 
 class LowerHouseApiService
 {
+    use NormalizesProfessionNames;
     protected string $baseUrl = 'https://dadosabertos.camara.leg.br/api/v2';
 
     public function listIds(): array
@@ -69,4 +71,29 @@ class LowerHouseApiService
 
         return $allBills;
     }
+    
+    public function getProfessions(string $id): array
+    {
+        $response = Http::withOptions(['verify' => false])->get("{$this->baseUrl}/deputados/{$id}/profissoes");
+
+        if ($response->failed()) {
+            throw new \RuntimeException("Failed to fetch professions for legislator {$id}: " . $response->status());
+        }
+
+        $professions = $response->json('dados') ?? [];
+
+        return collect($professions)
+            ->filter(fn ($p) => !empty($p['titulo']))
+            ->map(fn ($p) => [
+                'original_name' => $p['titulo'],
+                'normalized_name' => $this->normalizeProfessionName($p['titulo']),
+                'source' => 'lower_house',
+                'is_primary' => null,
+                'registered_at' => isset($p['dataHora']) ? substr($p['dataHora'], 0, 10) : null,
+                'camara_code' => $p['codTipoProfissao'] ?? null,
+            ])
+            ->values()
+            ->all();
+    }
+    
 }
