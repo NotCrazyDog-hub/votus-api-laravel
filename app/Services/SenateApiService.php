@@ -240,4 +240,25 @@ class SenateApiService
             ->values()
             ->all();
     }
+
+    public function extractTopics(array $processo): array
+    {
+        $classes = $processo['classes']['classe'] ?? $processo['classes'] ?? [];
+
+        if (isset($classes['descricao']) || isset($classes['Descricao'])) {
+            $classes = [$classes];
+        }
+
+        return collect($classes)
+            ->map(fn ($c) => $c['descricao'] ?? $c['Descricao'] ?? $c['nome'] ?? null)
+            ->filter()
+            ->unique()
+            ->map(fn ($name) => [
+                'external_id' => null,
+                'name' => trim($name),
+                'relevance' => null,
+            ])
+            ->values()
+            ->all();
+    }
 }
