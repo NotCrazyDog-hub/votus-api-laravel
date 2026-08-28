@@ -130,6 +130,8 @@ php artisan sync:bills-senate
 ```
 app/
   Console/Commands/
+    SyncBillTopics.php                Sincroniza temas das proposições
+    SyncLegislatorProfessions.php     Sincroniza profissões
     SyncLowerHouseBills.php           Sincroniza proposições de deputados
     SyncLowerHouseCommittees.php      Sincroniza comissões de deputados
     SyncLowerHouseLegislators.php     Sincroniza deputados federais
@@ -149,6 +151,8 @@ Models/
   Bill.php                          Model de proposições
   Committee.php                     Model de comissões parlamentares
   News.php                          Model de notícias
+  Profession.php                    Model de profições
+  Topic.php                         Model de temas
   Legislator.php                    Model da tabela legislators
 Services/
   Concerns/
