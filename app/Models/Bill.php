@@ -26,4 +26,11 @@ class Bill extends Model
     {
         return $this->belongsToMany(Legislator::class, 'bill_legislator');
     }
+
+    public function topics()
+    {
+        return $this->belongsToMany(Topic::class, 'bill_topic')
+            ->withPivot('relevance')
+            ->withTimestamps();
+    }
 }
