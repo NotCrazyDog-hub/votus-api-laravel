@@ -95,5 +95,27 @@ class LowerHouseApiService
             ->values()
             ->all();
     }
+
+    public function getTopics(string $billId): array
+    {
+        $response = Http::withOptions(['verify' => false])
+            ->get("{$this->baseUrl}/proposicoes/{$billId}/temas");
+
+        if ($response->failed()) {
+            throw new \RuntimeException("Failed to fetch topics for bill {$billId}: " . $response->status());
+        }
+
+        $temas = $response->json('dados') ?? [];
+
+        return collect($temas)
+            ->filter(fn ($t) => !empty($t['tema']))
+            ->map(fn ($t) => [
+                'external_id' => isset($t['codTema']) ? (string) $t['codTema'] : null,
+                'name' => trim($t['tema']),
+                'relevance' => isset($t['relevancia']) ? (int) $t['relevancia'] : null,
+            ])
+            ->values()
+            ->all();
+    }
     
 }
