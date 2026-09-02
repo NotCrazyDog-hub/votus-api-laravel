@@ -10,15 +10,16 @@ return new class extends Migration
     {
         Schema::table('bills', function (Blueprint $table) {
             $table->string('status_situacao')->nullable()->after('raw_data');
-            $table->string('status_orgao')->nullable()->after('status_situacao');
-            $table->timestamp('status_checked_at')->nullable()->after('status_orgao');
+            $table->string('status_sigla')->nullable()->after('status_situacao');
+            $table->boolean('status_tramitando')->nullable()->after('status_sigla');
+            $table->timestamp('status_checked_at')->nullable()->after('status_tramitando');
         });
     }
 
     public function down(): void
     {
         Schema::table('bills', function (Blueprint $table) {
-            $table->dropColumn(['status_situacao', 'status_orgao', 'status_checked_at']);
+            $table->dropColumn(['status_situacao', 'status_sigla', 'status_tramitando', 'status_checked_at']);
         });
     }
 };
