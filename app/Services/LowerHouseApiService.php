@@ -71,6 +71,25 @@ class LowerHouseApiService
 
         return $allBills;
     }
+
+    public function getBillStatus(string $billId): array
+    {
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/proposicoes/{$billId}");
+
+        if ($response->failed()) {
+            throw new \RuntimeException("Failed to fetch status for bill {$billId}: " . $response->status());
+        }
+
+        $dados = $response->json('dados') ?? [];
+        $status = $dados['statusProposicao'] ?? [];
+
+        return [
+            'situacao' => $status['descricaoSituacao'] ?? null,
+            'orgao' => $status['siglaOrgao'] ?? null,
+        ];
+    }
     
     public function getProfessions(string $id): array
     {
