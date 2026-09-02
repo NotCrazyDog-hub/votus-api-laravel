@@ -211,6 +211,26 @@ class SenateApiService
         return $response->json() ?? [];
     }
 
+    public function getBillStatus(string $billId): array
+    {
+        $response = Http::withOptions(['verify' => false])
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get("{$this->baseUrl}/processo/{$billId}");
+
+        if ($response->failed()) {
+            throw new \RuntimeException("Failed to fetch status for bill {$billId}: " . $response->status());
+        }
+
+        $processo = $response->json('processo') ?? $response->json() ?? [];
+
+        return [
+            'situacao' => $processo['situacaoAtual'] ?? null,
+            'sigla_situacao' => $processo['siglaSituacaoAtual'] ?? null,
+            'tramitando' => isset($processo['tramitando']) ? $processo['tramitando'] === 'Sim' : null,
+            'data_situacao' => $processo['dataSituacaoAtual'] ?? null,
+        ];
+    }
+
     public function getProfessions(string $id): array
     {
         $response = Http::withOptions(['verify' => false])
