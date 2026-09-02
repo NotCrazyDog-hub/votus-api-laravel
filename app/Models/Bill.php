@@ -15,6 +15,10 @@ class Bill extends Model
         'summary',
         'presented_at',
         'raw_data',
+        'status_situacao', 
+        'status_sigla', 
+        'status_tramitando', 
+        'status_checked_at',
     ];
 
     protected $casts = [
