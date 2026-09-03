@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LegislatorController;
 use App\Http\Controllers\SchedulerController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\AgenteController;
 
 Route::get('/deputies', [LegislatorController::class, 'indexForDeputies']);
 Route::get('/deputies/{external_id}', [LegislatorController::class, 'showDeputy']);
@@ -14,3 +15,7 @@ Route::get('/schedule/status', [SchedulerController::class, 'status']);
 Route::post('/news', [NewsController::class, 'store']);
 Route::get('/news', [NewsController::class, 'index']);
 Route::get('/news/{news}', [NewsController::class, 'show']);
+
+Route::post('/agente/perguntar', [AgenteController::class, 'perguntar'])
+->middleware('throttle:10,1')
+->name('agente.perguntar');
