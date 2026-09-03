@@ -61,13 +61,15 @@ php artisan tinker --execute="echo Str::random(40);"
 
 Em seguida, copie o resultado e cole na variável "SCHEDULER_TOKEN" do .env
 
+Preencha também a variável "N8N_WEBHOOK_URL" do .env com a URL do n8n para conectar com seu agente de IA
+
 2. Rode as migrations e sincronize os dados:
  
 ```bash
 php artisan migrate
 ```
 ```bash
-php artisan sync:legislators-lower-house && php artisan sync:committees-lower-house && php artisan sync:legislators-senate && php artisan sync:committees-senate && php artisan sync:bills-lower-house && php artisan sync:bills-senate
+php artisan sync:legislators-lower-house && php artisan sync:committees-lower-house && php artisan sync:legislators-senate && php artisan sync:committees-senate && php artisan sync:bills-lower-house && php artisan sync:bills-senate && php artisan sync:bill-status && php artisan sync:bill-topics && php artisan sync:legislator-professions
 ```
 ```bash
 php artisan serve
@@ -86,6 +88,7 @@ GET /api/schedule/status             Dispara o Laravel Scheduler via HTTP
 POST /api/news                       Cadastro de notícias
 GET /api/news                        Listagem de notícias
 GET /api/news/{news}                 Exibição detalhada de uma notícia
+POST /api/agente/perguntar           Envio de perguntas para o agente de IA
 ```
 
 ## 🔄 Sincronização de dados
@@ -115,6 +118,15 @@ php artisan sync:committees-senate
 ```bash
 php artisan sync:bills-senate
 ```
+```bash
+php artisan sync:bill-status
+```
+```bash
+php artisan sync:bill-topics
+```
+```bash
+php artisan sync:legislator-professions
+```
 
 ## 🛠️ Stack
  
@@ -142,6 +154,7 @@ app/
     ElectoralStatus.php               Status eleitoral
     LegislatorStatus.php              Status do mandato
   Http/Controllers/
+    AgenteController.php              Interação com agente de IA
     LegislatorController.php          Listagem e exibição do perfil de parlamentares
     NewsController.php                Cadastro e listagem de notícias com filtro de relevância
     SchedulerController.php           Execução de tarefas agendadas via HTTP
