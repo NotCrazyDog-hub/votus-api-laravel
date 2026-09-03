@@ -37,4 +37,9 @@ class Bill extends Model
             ->withPivot('relevance')
             ->withTimestamps();
     }
+
+    public function tramitations(): HasMany
+    {
+        return $this->hasMany(BillTramitation::class);
+    }
 }
